@@ -10,6 +10,7 @@ namespace easeopengl{
     class VAO{
         GLuint vao;
         VBO<Data> *vbo;
+        EBO<Data> *ebo;
         GLuint vao_data_length;
 
         public:
@@ -27,9 +28,15 @@ namespace easeopengl{
                 this->vbo->setVertexAttrib(location , size , offset, this->vao_data_length);
             }
 
+            void bindEBO(Data data[] , GLuint data_length){
+                this->ebo = new EBO<Data>(data, data_length);
+            }
+
             void unbind(){
                 this->vbo->unbind();
                 glBindVertexArray(0);
+                if(this->ebo != nullptr)
+                    this->ebo->unbind();
             }
 
             GLuint getVAO(){

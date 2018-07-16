@@ -17,29 +17,63 @@ namespace easeopengl{
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     }
 
-    GLFWwindow* createWindow(GLuint width, GLuint height, const char* name){
-    GLFWwindow *window = glfwCreateWindow(width , height , name , nullptr , nullptr);
-        if(window == nullptr){
-            cout<<"Failed to create window"<<endl;
-            glfwTerminate();
-            exit(-1);
-        }
-        return window;
-    }
+    class EaseWindow{
+        GLFWwindow* window;
+        GLfloat width, height;
+        const char* name;
+        public:
+            EaseWindow(GLuint width, GLuint height, const char* name){
+                this->width = width;
+                this->height = height;
+                this->name = name;
+                this->window = glfwCreateWindow(width , height , name , nullptr , nullptr);
+                
+                if(this->window == nullptr){
+                    cout<<"Failed to create window"<<endl;
+                    glfwTerminate();
+                    exit(-1);
+                }
+            }
 
-    void useWindow(GLFWwindow* window){
-        glfwMakeContextCurrent(window);
+            void use(){
+                glfwMakeContextCurrent(this->window);
 
-        glfwSetKeyCallback(window, ___key_callback);
-        glfwSetCursorPosCallback(window, ___mouse_callback);
-        glfwSetScrollCallback(window, ___scroll_callback);
+                glfwSetKeyCallback(this->window, ___key_callback);
+                glfwSetCursorPosCallback(this->window, ___mouse_callback);
+                glfwSetScrollCallback(this->window, ___scroll_callback);
 
-        glewExperimental = GL_TRUE;
-        glewInit();
+                glewExperimental = GL_TRUE;
+                glewInit();
+                glViewport(0, 0, this->width, this->height);
+            }
 
-        int width, height;
-        glfwGetFramebufferSize(window, &width, &height);  
-        glViewport(0, 0, width, height);
+            void update(){
+                int width, height;
+                glfwGetFramebufferSize(this->window, &width, &height);  
+                glViewport(0,0,width,height);
+                this->width = width;
+                this->height = height;        
+            }
+            
+            int getWidth(){
+                int width, height;
+                glfwGetFramebufferSize(window, &width, &height);  
+                return width;
+            }
+
+            int getHeight(){
+                int width, height;
+                glfwGetFramebufferSize(window, &width, &height);  
+                return height;
+            }
+
+            GLFWwindow* getWindow(){
+                return this->window;
+            }
+    };
+
+    void endProgram(){
+        glfwTerminate();
     }
 }
 
