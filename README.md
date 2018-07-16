@@ -42,5 +42,5 @@ int main(int argc, char const *argv[]){
 ```
 This is just hello window in EaseOpenGL. It can do much more.
 
-## How to use
+## Docs
 **Coming soon!!!**
