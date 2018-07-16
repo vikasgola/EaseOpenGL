@@ -12,10 +12,9 @@ namespace easeopengl{
 
     
     namespace sdjaskdbask{
-        glm::vec3 position = glm::vec3(0.0f, 1.0f, 6.0f);
-        glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 position = glm::vec3(0.0f, 0.0f, 6.0f);
+        glm::vec3 target = glm::vec3(0.0f, 0.0f, 4.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        GLfloat speed = 5.0f;
         GLfloat zoom_level = 45.0f;
         glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
 
@@ -24,7 +23,6 @@ namespace easeopengl{
         GLfloat sensitivity = 0.08f;
         GLfloat pitch_mouse = 0.0f, yaw_mouse = -90.0f;
         bool firstMouse = true;
-
         bool keys[1024];
 
         void ___WASDcontrols(GLFWwindow* window, int key, int scancode, int action, int mode){
@@ -63,11 +61,11 @@ namespace easeopengl{
             if(pitch_mouse < -89.0f)
                 pitch_mouse = -89.0f;
 
-            glm::vec3 front;
-            front.x = cos(glm::radians(pitch_mouse)) * cos(glm::radians(yaw_mouse));
-            front.y = sin(glm::radians(pitch_mouse));
-            front.z = cos(glm::radians(pitch_mouse)) * sin(glm::radians(yaw_mouse));
-            front = glm::normalize(front);
+            glm::vec3 fron;
+            fron.x = cos(glm::radians(pitch_mouse)) * cos(glm::radians(yaw_mouse));
+            fron.y = sin(glm::radians(pitch_mouse));
+            fron.z = cos(glm::radians(pitch_mouse)) * sin(glm::radians(yaw_mouse));
+            front = glm::normalize(fron);
         }
 
         void ___scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
@@ -83,10 +81,10 @@ namespace easeopengl{
     
 
     class Camera{
-        glm::vec3 position = glm::vec3(0.0f, 1.0f, 6.0f);
-        glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 position = glm::vec3(0.0f, 0.0f, 6.0f);
+        glm::vec3 target = glm::vec3(0.0f, 0.0f, 4.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        GLfloat speed = 5.0f;
+        GLfloat speed = 2.0f;
         GLfloat zoom_level = 45.0f;
         glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
 
@@ -94,13 +92,14 @@ namespace easeopengl{
         GLfloat xoffset, yoffset;
         GLfloat sensitivity = 0.08f;
         GLfloat pitch_mouse = 0.0f, yaw_mouse = -90.0f;
-        bool firstMouse = true;
 
         glm::mat4 view;
         glm::mat4 projection;
-        bool keys[1024];
         bool fly = false;
         bool zoom = false;
+        GLfloat delta_time = 0.0f;
+        GLfloat last_frame = 0.0f;
+        GLfloat current_frame;
 
         public:
             Camera(EaseWindow window){
@@ -108,6 +107,8 @@ namespace easeopengl{
                 this->lastY = (GLfloat)window.getHeight()/2;
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
+            
+                glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
 
             Camera( glm::vec3 position, glm::vec3 front ,  glm::vec3 target, glm::vec3 up, GLfloat speed , EaseWindow window){
@@ -121,28 +122,50 @@ namespace easeopengl{
 
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
+
+                glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
 
             void updatePosition(glm::vec3 position){
                 this->position = position;
+                sdjaskdbask::position = this->position;
             }
+
             void updateTarget(glm::vec3 target){
                 this->target = target;
+                sdjaskdbask::target = this->target;
             }
+
             void updateSpeed(GLfloat speed){
                 this->speed = speed;
             }
             void updateUp(glm::vec3 up){
                 this->up = up;
+                sdjaskdbask::up = this->up;
             }
             void updateFront(glm::vec3 front){
                 this->front = front;
+                sdjaskdbask::front = this->front;
             }
+
             void updateFront(GLfloat sensitivity){
                 this->sensitivity = sensitivity;
+                sdjaskdbask::sensitivity = this->sensitivity;
             }
             void updateZoom(GLfloat zoom){
                 this->zoom_level = zoom;
+                sdjaskdbask::zoom_level = this->zoom_level;
+            }
+
+            glm::vec3 getTarget(){
+                return this->target;
+            }
+            glm::vec3 getFront(){
+                return this->front;
+            }
+
+            glm::vec3 getPosition(){
+                return this->position;
             }
 
             void updateAll( glm::vec3 position, glm::vec3 front , glm::vec3 target, glm::vec3 up, GLfloat speed){
@@ -151,24 +174,28 @@ namespace easeopengl{
                 this->position = position;
                 this->target = target;
                 this->front = front;
-            }
+            
 
-            void update(EaseWindow window, GLuint shader){
-                std::copy(this->keys, this->keys+1024, sdjaskdbask::keys );
-                sdjaskdbask::zoom_level = this->zoom_level;
                 sdjaskdbask::position = this->position;
                 sdjaskdbask::target = this->target;
                 sdjaskdbask::front = this->front;
-                sdjaskdbask::lastX = this->lastX;
-                sdjaskdbask::lastY = this->lastY;
                 sdjaskdbask::up = this->up;
-                sdjaskdbask::speed = this->speed;
-                sdjaskdbask::sensitivity = this->sensitivity;
-                sdjaskdbask::xoffset = this->xoffset;
-                sdjaskdbask::yoffset = this->yoffset;
-                sdjaskdbask::pitch_mouse = this->pitch_mouse;
-                sdjaskdbask::yaw_mouse = this->yaw_mouse;
-                sdjaskdbask::firstMouse = this->firstMouse;
+            }
+
+            void update(EaseWindow window, GLuint shader){
+
+                this->current_frame = glfwGetTime();
+                this->delta_time = this->current_frame - this->last_frame;
+                this->last_frame = this->current_frame;
+
+                this->zoom_level = sdjaskdbask::zoom_level;
+                this->position = sdjaskdbask::position;
+                this->target = sdjaskdbask::target;
+                this->front = sdjaskdbask::front;
+                this->lastX = sdjaskdbask::lastX;
+                this->lastY = sdjaskdbask::lastY;
+                this->up =  sdjaskdbask::up;
+                this->sensitivity = sdjaskdbask::sensitivity;
 
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
@@ -187,22 +214,26 @@ namespace easeopengl{
             }
 
             void moveLegs(){
-                // this->speed = 3.0f*delta_time;
-                if(this->keys[GLFW_KEY_W]){
-                    this->position *= this->speed * this->front;
+
+                GLfloat speed = this->speed*this->delta_time;
+                if( sdjaskdbask::keys[GLFW_KEY_W]){
+                    this->position += speed * this->front;
                 }
-                if(keys[GLFW_KEY_S]){
-                    this->position *= this->speed * this->front;
+                if(sdjaskdbask::keys[GLFW_KEY_S]){
+                    this->position -= speed * this->front;
                 }
-                if(keys[GLFW_KEY_A]){
-                    this->position -= glm::normalize(glm::cross(this->front, this->up)) * this->speed;
+                if(sdjaskdbask::keys[GLFW_KEY_A]){
+                    this->position -= glm::normalize(glm::cross(this->front, this->up)) * speed;
                 }
-                if(keys[GLFW_KEY_D]){
-                    this->position += glm::normalize(glm::cross(this->front, this->up)) * this->speed;
+                if(sdjaskdbask::keys[GLFW_KEY_D]){
+                    this->position += glm::normalize(glm::cross(this->front, this->up)) * speed;
                 }
 
                 if(!this->fly)
-                    this->position.y = 2.0f;
+                    this->position.y = 0.2f;
+
+                sdjaskdbask::position = this->position;
+
             }
 
 

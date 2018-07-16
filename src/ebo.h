@@ -20,13 +20,13 @@ namespace easeopengl{
                 return this->ebo_data;
             }
             
-            EBO(Data data , GLuint data_length){
+            EBO(Data data[] , GLuint data_length){
                 this->ebo_data = data;
                 this->ebo_data_length = data_length;
 
                 glGenBuffers(1, &this->ebo);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->ebo);
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->ebo_data_length*sizeof(this->ebo_data), this->vbo_data, GL_STATIC_DRAW);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->ebo_data_length*sizeof(this->ebo_data), this->ebo_data, GL_STATIC_DRAW);
             }
 
             void unbind(){

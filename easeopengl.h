@@ -10,5 +10,6 @@
 #include "./src/shader.h"
 #include "./src/controls.h"
 #include "./src/camera.h"
+#include "./src/objects.h"
 
 #endif

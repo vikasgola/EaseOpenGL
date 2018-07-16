@@ -6,11 +6,11 @@
 
 namespace easeopengl{
 
-    template<class Data>
+    template<class Data, class Data2>
     class VAO{
         GLuint vao;
         VBO<Data> *vbo;
-        EBO<Data> *ebo;
+        EBO<Data2> *ebo;
         GLuint vao_data_length;
 
         public:
@@ -28,8 +28,8 @@ namespace easeopengl{
                 this->vbo->setVertexAttrib(location , size , offset, this->vao_data_length);
             }
 
-            void bindEBO(Data data[] , GLuint data_length){
-                this->ebo = new EBO<Data>(data, data_length);
+            void bindEBO(Data2 data[] , GLuint data_length){
+                this->ebo = new EBO<Data2>(data, data_length);
             }
 
             void unbind(){
@@ -41,6 +41,10 @@ namespace easeopengl{
 
             GLuint getVAO(){
                 return this->vao;
+            }
+
+            GLuint getVAOdataLength(){
+                return this->vao_data_length;
             }
 
     };
