@@ -22,8 +22,8 @@ class VBO{
         Data getVBOData(){
             return this->vbo_data;
         }
-        
-        VBO(Data data , GLuint data_length){
+
+        VBO(Data data[] , GLuint data_length){
             this->vbo_data = data;
             this->vbo_data_length = data_length;
 
@@ -32,9 +32,8 @@ class VBO{
             glBufferData(GL_ARRAY_BUFFER, this->vbo_data_length*sizeof(this->vbo_data), this->vbo_data, GL_STATIC_DRAW);
         }
 
-        void setVertexAttrib(GLuint location, GLuint size, GLuint offset){
-            cout<<sizeof(Data)<<endl;
-            glVertexAttribPointer(location , size , GL_FLOAT , GL_FALSE, vbo_data_length*sizeof(Data), (GLvoid*)(offset * sizeof(Data)));
+        void setVertexAttrib(GLuint location, GLuint size, GLuint offset, GLuint point_length=3){
+            glVertexAttribPointer(location , size , GL_FLOAT , GL_FALSE, point_length*sizeof(Data), (GLvoid*)(offset * sizeof(Data)));
             glEnableVertexAttribArray(location);
         }
 

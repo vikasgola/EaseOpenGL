@@ -32,12 +32,12 @@ class Shader{
             return content;
         }
     
-        Shader(const char* filename){
+        Shader(const char* filename, GLuint shader_type){
             this->shader_filename = filename;
             string shader_string = readShader(this->shader_filename);
 
             const GLchar *shader_source = shader_string.c_str();
-            this->shader = glCreateShader(GL_VERTEX_SHADER);
+            this->shader = glCreateShader(shader_type);
             glShaderSource(this->shader , 1 , &shader_source , NULL);
         }
 
@@ -67,12 +67,11 @@ class Shader{
             return this->shader_filename;
         }
 
-        GLuint static linkShaders(GLuint shaders[] , int number_of_shaders){
+        GLuint static linkShaders(Shader shader1, Shader shader2 ){
             GLuint shader_program = glCreateProgram();
 
-            for(int i=0;i<number_of_shaders;i++){
-                glAttachShader(shader_program,shaders[i]);
-            }
+            glAttachShader(shader_program,shader1.getShader());
+            glAttachShader(shader_program,shader2.getShader());
             glLinkProgram(shader_program);
 
             // status of shader program and linking

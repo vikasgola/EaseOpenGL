@@ -7,19 +7,38 @@
 
 #include<iostream>
 #include<fstream>
+#include "vbo.h"
+#include "ebo.h"
 
 
+template<class Data>
 class VAO{
     GLuint vao;
+    VBO<Data> *vbo;
+    GLuint vao_data_length;
 
     public:
-        VAO(){
+        VAO(GLuint data_length){
             glGenVertexArrays(1, &this->vao);
             glBindVertexArray(this->vao);
+            this->vao_data_length = data_length;
+        }
+
+        void bindVBO(Data data[] , GLuint data_length){
+            this->vbo = new VBO<Data>(data, data_length);
+        }
+
+        void setVBOVertexAttrib(GLuint location, GLuint size, GLuint offset){
+            this->vbo->setVertexAttrib(location , size , offset, this->vao_data_length);
         }
 
         void unbind(){
+            this->vbo->unbind();
             glBindVertexArray(0);
+        }
+
+        GLuint getVAO(){
+            return this->vao;
         }
 
 };
