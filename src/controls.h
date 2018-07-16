@@ -2,15 +2,12 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
-#include "init.h"
 #include<vector>
 
 namespace easeopengl{
-    namespace{
-        vector<void (*)(GLFWwindow* , int , int , int , int)> keyfunctions;
-        vector<void (*)(GLFWwindow* , double ,double)> mousefunctions;
-        vector<void (*)(GLFWwindow* , double , double)> scrollfunctions;
-    }
+    std::vector< void (*)(GLFWwindow* , int , int , int , int)> keyfunctions;
+    std::vector< void (*)(GLFWwindow* , double ,double)> mousefunctions;
+    std::vector< void (*)(GLFWwindow* , double , double)> scrollfunctions;
     
     void addKeyCallBack(void (*keyfunction)(GLFWwindow* , int , int , int , int)){
         keyfunctions.push_back(keyfunction);

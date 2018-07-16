@@ -4,6 +4,7 @@
 #define GLEW_STATIC
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
+#include"controls.h"
 
 #include<iostream>
 using namespace std;
@@ -40,29 +41,6 @@ namespace easeopengl{
         glfwGetFramebufferSize(window, &width, &height);  
         glViewport(0, 0, width, height);
     }
-
-    namespace{
-
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
-        for(int i=0;i<keyfunctions.size();i++){
-            keyfunctions[i](window,key,scancode,action,mode);
-        }
-    }
-
-        
-    void mouse_callback(GLFWwindow* window, double xpos, double ypos){
-        for(int i=0;i<mousefunctions.size();i++){
-            mousefunctions[i](window,xpos,ypos);
-        }
-    }
-    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
-        for(int i=0;i<scrollfunctions.size();i++){
-            scrollfunctions[i](window,xoffset,yoffset);
-        }
-    }
-
-    }
-
 }
 
 #endif
