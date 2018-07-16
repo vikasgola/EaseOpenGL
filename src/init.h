@@ -28,7 +28,11 @@ namespace easeopengl{
 
     void useWindow(GLFWwindow* window){
         glfwMakeContextCurrent(window);
-        
+
+        glfwSetKeyCallback(window, ___key_callback);
+        glfwSetCursorPosCallback(window, ___mouse_callback);
+        glfwSetScrollCallback(window, ___scroll_callback);
+
         glewExperimental = GL_TRUE;
         glewInit();
 
@@ -36,6 +40,29 @@ namespace easeopengl{
         glfwGetFramebufferSize(window, &width, &height);  
         glViewport(0, 0, width, height);
     }
+
+    namespace{
+
+    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
+        for(int i=0;i<keyfunctions.size();i++){
+            keyfunctions[i](window,key,scancode,action,mode);
+        }
+    }
+
+        
+    void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+        for(int i=0;i<mousefunctions.size();i++){
+            mousefunctions[i](window,xpos,ypos);
+        }
+    }
+    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
+        for(int i=0;i<scrollfunctions.size();i++){
+            scrollfunctions[i](window,xoffset,yoffset);
+        }
+    }
+
+    }
+
 }
 
 #endif
