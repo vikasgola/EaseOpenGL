@@ -18,6 +18,10 @@ namespace easeopengl{
             GLint *indices;
             glm::vec3 color;
             VAO<GLfloat, GLint> *vao;
+            glm::mat4 model;
+            glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f);
+            glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f);
+            GLfloat angle = 0.0f;
             
             EaseObject(GLuint point_length , GLfloat _vertices[], GLuint number_of_vertices, GLint _indices[] = nullptr,  GLuint number_of_indices = 0, glm::vec3 _color = glm::vec3(1.0f,1.0f,1.0f)){
                 this->vertices = _vertices;
@@ -44,12 +48,29 @@ namespace easeopengl{
 
             }
 
-            void draw(GLint draw_using){
+            void draw(GLint draw_using,GLuint shader_program){
                 if(this->indices == nullptr){
+                    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE , value_ptr(this->model));
                     glBindVertexArray(this->vao->getVAO());
                     glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
                     glBindVertexArray(0);
                 }
+
+            }
+
+            void setPosition(glm::vec3 translate_position){
+                this->position = translate_position;    
+                this->model = glm::translate(this->model, this->position);
+            }
+
+            void setRotation(GLfloat rotate_angle, glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f)){
+                this->angle = rotate_angle;
+                this->rotation_axis = rotation_axis;
+                this->model = glm::rotate(this->model , this->angle , this->rotation_axis);
+            }
+
+            void clearModel(){
+                this->model = glm::mat4();
             }
     };
 

@@ -12,7 +12,7 @@ namespace easeopengl{
 
     
     namespace sdjaskdbask{
-        glm::vec3 position = glm::vec3(0.0f, 0.0f, 6.0f);
+        glm::vec3 position = glm::vec3(0.0f, 1.0f, 6.0f);
         glm::vec3 target = glm::vec3(0.0f, 0.0f, 4.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
         GLfloat zoom_level = 45.0f;
@@ -81,10 +81,10 @@ namespace easeopengl{
     
 
     class Camera{
-        glm::vec3 position = glm::vec3(0.0f, 0.0f, 6.0f);
+        glm::vec3 position = glm::vec3(0.0f, 1.0f, 6.0f);
         glm::vec3 target = glm::vec3(0.0f, 0.0f, 4.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        GLfloat speed = 2.0f;
+        GLfloat speed = 1.0f;
         GLfloat zoom_level = 45.0f;
         glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
 
@@ -102,6 +102,8 @@ namespace easeopengl{
         GLfloat current_frame;
 
         public:
+            Camera(){}
+
             Camera(EaseWindow window){
                 this->lastX = (GLfloat)window.getWidth()/2;
                 this->lastY = (GLfloat)window.getHeight()/2;
@@ -230,7 +232,7 @@ namespace easeopengl{
                 }
 
                 if(!this->fly)
-                    this->position.y = 0.2f;
+                    this->position.y = 1.0f;
 
                 sdjaskdbask::position = this->position;
 

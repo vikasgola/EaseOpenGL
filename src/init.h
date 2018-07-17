@@ -1,7 +1,6 @@
 #ifndef INIT_H
 #define INIT_H
 
-#define GLEW_STATIC
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
 #include"controls.h"
