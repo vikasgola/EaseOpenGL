@@ -13,14 +13,14 @@ namespace easeopengl{
     
     namespace sdjaskdbask{
         glm::vec3 position = glm::vec3(0.0f, 1.0f, 6.0f);
-        glm::vec3 target = glm::vec3(0.0f, 0.0f, 4.0f);
+        glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
         GLfloat zoom_level = 45.0f;
         glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
 
         GLfloat lastX, lastY;
         GLfloat xoffset, yoffset;
-        GLfloat sensitivity = 0.08f;
+        GLfloat sensitivity = 0.1f;
         GLfloat pitch_mouse = 0.0f, yaw_mouse = -90.0f;
         bool firstMouse = true;
         bool keys[1024];
@@ -81,8 +81,9 @@ namespace easeopengl{
     
 
     class Camera{
-        glm::vec3 position = glm::vec3(0.0f, 1.0f, 6.0f);
-        glm::vec3 target = glm::vec3(0.0f, 0.0f, 4.0f);
+        GLfloat height = 2.0f;
+        glm::vec3 position = glm::vec3(0.0f, this->height, 6.0f);
+        glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
         GLfloat speed = 1.0f;
         GLfloat zoom_level = 45.0f;
@@ -90,7 +91,7 @@ namespace easeopengl{
 
         GLfloat lastX, lastY;
         GLfloat xoffset, yoffset;
-        GLfloat sensitivity = 0.08f;
+        GLfloat sensitivity = 0.1f;
         GLfloat pitch_mouse = 0.0f, yaw_mouse = -90.0f;
 
         glm::mat4 view;
@@ -128,35 +129,39 @@ namespace easeopengl{
                 glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
 
-            void updatePosition(glm::vec3 position){
+            void setPosition(glm::vec3 position){
                 this->position = position;
                 sdjaskdbask::position = this->position;
             }
 
-            void updateTarget(glm::vec3 target){
+            void setTarget(glm::vec3 target){
                 this->target = target;
                 sdjaskdbask::target = this->target;
             }
 
-            void updateSpeed(GLfloat speed){
+            void setSpeed(GLfloat speed){
                 this->speed = speed;
             }
-            void updateUp(glm::vec3 up){
+            void setUp(glm::vec3 up){
                 this->up = up;
                 sdjaskdbask::up = this->up;
             }
-            void updateFront(glm::vec3 front){
+            void setFront(glm::vec3 front){
                 this->front = front;
                 sdjaskdbask::front = this->front;
             }
 
-            void updateFront(GLfloat sensitivity){
+            void setSensitivity(GLfloat sensitivity){
                 this->sensitivity = sensitivity;
                 sdjaskdbask::sensitivity = this->sensitivity;
             }
-            void updateZoom(GLfloat zoom){
+            void setZoom(GLfloat zoom){
                 this->zoom_level = zoom;
                 sdjaskdbask::zoom_level = this->zoom_level;
+            }
+
+            void setHeight(GLfloat height){
+                this->height = height;
             }
 
             glm::vec3 getTarget(){
@@ -204,6 +209,7 @@ namespace easeopengl{
                 
                 glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE , value_ptr(this->projection));  
                 glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE , value_ptr(this->view));
+                glUniform3f(glGetUniformLocation(shader, "camera_position"),this->position.x,this->position.y, this->position.z );
             }
 
 
@@ -232,7 +238,7 @@ namespace easeopengl{
                 }
 
                 if(!this->fly)
-                    this->position.y = 1.0f;
+                    this->position.y = this->height;
 
                 sdjaskdbask::position = this->position;
 

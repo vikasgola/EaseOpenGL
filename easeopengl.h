@@ -11,5 +11,6 @@
 #include "./src/controls.h"
 #include "./src/camera.h"
 #include "./src/objects.h"
+#include "./src/light.h"
 
 #endif

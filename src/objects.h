@@ -23,7 +23,7 @@ namespace easeopengl{
             glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f);
             GLfloat angle = 0.0f;
             
-            EaseObject(GLuint point_length , GLfloat _vertices[], GLuint number_of_vertices, GLint _indices[] = nullptr,  GLuint number_of_indices = 0, glm::vec3 _color = glm::vec3(0.0f,0.0f,0.0f)){
+            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, GLint _indices[] = nullptr,  GLuint number_of_indices = 0, glm::vec3 _color = glm::vec3(0.0f,0.0f,0.0f)){
                 this->vertices = _vertices;
                 this->indices = _indices;
                 this->color = _color;
@@ -33,11 +33,14 @@ namespace easeopengl{
                 
                 this->vao->bindVBO(this->vertices ,  this->number_of_vertices);
                 this->vao->setVBOVertexAttrib(0,3,0);
-                if(point_length == 5){
+                if(id == 02 || id == 023 || id == 012 || id == 0123){
                     this->vao->setVBOVertexAttrib(2,2,3);
                 }
-                if(point_length == 6){
+                if(id == 01 || id == 012 || id == 0123 || id == 013){
                     this->vao->setVBOVertexAttrib(1,3,3);
+                }
+                if(id == 013 || id == 0123 || id == 023 || id == 03){
+                    this->vao->setVBOVertexAttrib(3,3,3);
                 }
 
                 if(this->indices != nullptr){
@@ -61,6 +64,14 @@ namespace easeopengl{
 
             void setColor(GLfloat r,GLfloat g, GLfloat b ){
                 this->color = glm::vec3(r,g,b);
+            }
+
+            glm::vec3 getColor(){
+                return this->color;
+            }
+
+            glm::vec3 getPosition(){
+                return this->position;
             }
 
             void setPosition(glm::vec3 translate_position){
