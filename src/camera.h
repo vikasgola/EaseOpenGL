@@ -189,7 +189,7 @@ namespace easeopengl{
                 sdjaskdbask::up = this->up;
             }
 
-            void update(EaseWindow window, GLuint shader){
+            void update(EaseWindow window, GLuint shader = NULL){
 
                 this->current_frame = glfwGetTime();
                 this->delta_time = this->current_frame - this->last_frame;
@@ -206,7 +206,10 @@ namespace easeopengl{
 
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
-                
+
+                if(shader == NULL)
+                    shader = window.getObjectShader();
+
                 glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE , value_ptr(this->projection));  
                 glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE , value_ptr(this->view));
                 glUniform3f(glGetUniformLocation(shader, "camera_position"),this->position.x,this->position.y, this->position.z );

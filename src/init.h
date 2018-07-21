@@ -4,6 +4,7 @@
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
 #include"controls.h"
+#include"shader.h"
 
 #include<iostream>
 using namespace std;
@@ -20,6 +21,13 @@ namespace easeopengl{
         GLFWwindow* window;
         GLfloat width, height;
         const char* name;
+        Shader *object_vertex;
+        Shader *object_fragment;
+        Shader *light_vertex;
+        Shader *light_fragment;
+        GLuint object_shader;
+        GLuint light_shader;
+
         public:
             EaseWindow(GLuint width, GLuint height, const char* name){
                 this->width = width;
@@ -32,6 +40,43 @@ namespace easeopengl{
                     glfwTerminate();
                     exit(-1);
                 }
+
+                this->object_vertex = new Shader("./shaders/object/vertex_shader.glsl", GL_VERTEX_SHADER);
+                this->light_vertex = new Shader("./shaders/light/vertex_shader.glsl", GL_VERTEX_SHADER);
+                this->light_fragment = new Shader("./shaders/light/fragment_shader.glsl" , GL_FRAGMENT_SHADER);
+                this->light_fragment = new Shader("./shaders/object/fragment_shader.glsl" , GL_FRAGMENT_SHADER);
+
+                this->object_vertex->compile();
+                this->object_fragment->compile();
+                this->light_vertex->compile();
+                this->light_fragment->compile();
+
+                this->object_shader = Shader::linkShaders(*this->object_vertex , *this->object_fragment);
+                this->light_shader  =  Shader::linkShaders(*this->light_vertex , *this->light_fragment);
+            }
+
+            void setCustomLightShader(GLuint light_shader){
+                this->light_shader = light_shader;
+            }
+
+            void setCustomObjectShader(GLuint object_shader){
+                this->object_shader = object_shader;
+            }
+
+            void useLightShader(){
+                glUseProgram(this->light_shader);
+            }
+
+            void useObjectShader(){
+                glUseProgram(this->object_shader);
+            }
+
+            GLuint getLightShader(){
+                return this->light_shader;
+            }
+
+            GLuint getObjectShader(){
+                return this->object_shader;
             }
 
             void use(){

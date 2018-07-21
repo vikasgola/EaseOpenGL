@@ -51,10 +51,10 @@ namespace easeopengl{
 
             }
 
-            void draw(GLint draw_using,GLuint shader_program){
+            void draw(GLint draw_using, EaseWindow window){
                 if(this->indices == nullptr){
-                    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE , value_ptr(this->model));
-                    glUniform3f(glGetUniformLocation(shader_program, "object_color"), this->color.r,this->color.g,this->color.b);
+                    glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "model"), 1, GL_FALSE , value_ptr(this->model));
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "object_color"), this->color.r,this->color.g,this->color.b);
                     glBindVertexArray(this->vao->getVAO());
                     glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
                     glBindVertexArray(0);
