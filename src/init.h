@@ -7,7 +7,6 @@
 #include"shader.h"
 
 #include<iostream>
-using namespace std;
 
 namespace easeopengl{
     void init(GLuint version){
@@ -37,7 +36,7 @@ namespace easeopengl{
                 this->window = glfwCreateWindow(width , height , name , nullptr , nullptr);
                 
                 if(this->window == nullptr){
-                    cout<<"Failed to create window"<<endl;
+                    std::cout<<"Failed to create window"<<std::endl;
                     glfwTerminate();
                     exit(-1);
                 }
