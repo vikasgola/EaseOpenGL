@@ -120,7 +120,7 @@ namespace easeopengl{
             }
 
             void clearColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a){
-                    glClearColor(r,g,b,a);
+                glClearColor(r,g,b,a);
             }
 
             void clear(){

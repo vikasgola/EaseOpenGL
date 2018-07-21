@@ -12,23 +12,30 @@
 
 namespace easeopengl{
     class EaseObject{
-        public:
             GLfloat *vertices;
             GLuint number_of_vertices;
             GLint *indices;
-            glm::vec3 color ;
             VAO<GLfloat, GLint> *vao;
             glm::mat4 model;
             glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f);
             glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f);
             GLfloat angle = 0.0f;
             
-            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, GLint _indices[] = nullptr,  GLuint number_of_indices = 0, glm::vec3 _color = glm::vec3(0.0f,0.0f,0.0f)){
+            glm::vec3 ambient;
+            glm::vec3 diffuse;
+            glm::vec3 specular;
+            float shininess = 32.0f;
+
+        public:
+            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, GLint _indices[] = nullptr,  GLuint number_of_indices = 0, glm::vec3 _color = glm::vec3(1.0f,1.0f,1.0f)){
                 this->vertices = _vertices;
                 this->indices = _indices;
-                this->color = _color;
                 this->number_of_vertices = number_of_vertices;
 
+                this->ambient = _color;
+                this->diffuse = _color;
+                this->specular = _color;
+                
                 this->vao = new VAO<GLfloat, GLint>(point_length);
                 
                 this->vao->bindVBO(this->vertices ,  this->number_of_vertices);
@@ -54,13 +61,24 @@ namespace easeopengl{
             void draw(GLint draw_using, EaseWindow window, bool isLight=false){
                 GLuint shader;
                 if(isLight){
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.ambient"), this->ambient.r,this->ambient.g,this->ambient.b);
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.diffuse"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.specular"), this->specular.r,this->specular.g,this->specular.b);
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), this->position.x,this->position.y,this->position.z);
+
+                    glUniform3f(glGetUniformLocation(window.getLightShader(), "object_color"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
+                    
                     glBindVertexArray(this->vao->getVAO());
                     glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
                     glBindVertexArray(0);
                 }else if(this->indices == nullptr){
                     window.useObjectShader();
                     glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "model"), 1, GL_FALSE , value_ptr(this->model));
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "object_color"), this->color.r,this->color.g,this->color.b);
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "material.ambient"), this->ambient.r,this->ambient.g,this->ambient.b);
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "material.diffuse"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
+                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "material.specular"), this->specular.r,this->specular.g,this->specular.b);
+                    glUniform1f(glGetUniformLocation(window.getObjectShader(), "material.shininess"), this->shininess);
+                    
                     glBindVertexArray(this->vao->getVAO());
                     glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
                     glBindVertexArray(0);
@@ -68,12 +86,18 @@ namespace easeopengl{
 
             }
 
-            void setColor(GLfloat r,GLfloat g, GLfloat b ){
-                this->color = glm::vec3(r,g,b);
+            void setApperance(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular){
+                this->ambient = ambient;
+                this->specular = specular;
+                this->diffuse = diffuse;
             }
 
-            glm::vec3 getColor(){
-                return this->color;
+            void setShininess(GLfloat shininess){
+                this->shininess = shininess;
+            }
+
+            glm::vec3 getAmbient(){
+                return this->ambient;
             }
 
             glm::vec3 getPosition(){
