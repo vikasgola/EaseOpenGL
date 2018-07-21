@@ -83,16 +83,19 @@ namespace easeopengl{
             }
 
             void show(EaseWindow window){
-                this->light->draw(GL_TRIANGLES,window.getLightShader());
+                window.useLightShader();
+                this->light->draw(GL_TRIANGLES, window , true);
             }
 
             void on(EaseWindow window){
+                window.useLightShader();
                 glUniform3f(glGetUniformLocation(window.getLightShader(), "light_color"), this->color.r, this->color.g, this->color.b);
                 glm::vec3 pos = this->light->getPosition();
                 glUniform3f(glGetUniformLocation(window.getLightShader(), "light_position"), pos.x, pos.y, pos.z);
             }
 
             void off(EaseWindow window){
+                window.useLightShader();
                 glUniform3f(glGetUniformLocation(window.getLightShader(), "light_color"), 0.0f, 0.0f, 0.0f);
             }
     };

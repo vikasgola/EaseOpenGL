@@ -51,8 +51,14 @@ namespace easeopengl{
 
             }
 
-            void draw(GLint draw_using, EaseWindow window){
-                if(this->indices == nullptr){
+            void draw(GLint draw_using, EaseWindow window, bool isLight=false){
+                GLuint shader;
+                if(isLight){
+                    glBindVertexArray(this->vao->getVAO());
+                    glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
+                    glBindVertexArray(0);
+                }else if(this->indices == nullptr){
+                    window.useObjectShader();
                     glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "model"), 1, GL_FALSE , value_ptr(this->model));
                     glUniform3f(glGetUniformLocation(window.getObjectShader(), "object_color"), this->color.r,this->color.g,this->color.b);
                     glBindVertexArray(this->vao->getVAO());

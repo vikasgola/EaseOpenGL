@@ -190,6 +190,7 @@ namespace easeopengl{
             }
 
             void update(EaseWindow window, GLuint shader = NULL){
+                window.useObjectShader();
 
                 this->current_frame = glfwGetTime();
                 this->delta_time = this->current_frame - this->last_frame;
@@ -209,6 +210,7 @@ namespace easeopengl{
 
                 if(shader == NULL)
                     shader = window.getObjectShader();
+
 
                 glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE , value_ptr(this->projection));  
                 glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE , value_ptr(this->view));
