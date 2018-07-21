@@ -27,6 +27,7 @@ namespace easeopengl{
         Shader *light_fragment;
         GLuint object_shader;
         GLuint light_shader;
+        bool isOpen = true;
 
         public:
             EaseWindow(GLuint width, GLuint height, const char* name){
@@ -53,6 +54,14 @@ namespace easeopengl{
 
                 this->object_shader = Shader::linkShaders(*this->object_vertex , *this->object_fragment);
                 this->light_shader  =  Shader::linkShaders(*this->light_vertex , *this->light_fragment);
+            }
+
+            ~EaseWindow(){
+                this->isOpen = false;
+                delete this->object_vertex;
+                delete this->object_fragment;
+                delete this->light_fragment;
+                delete this->light_vertex;
             }
 
             void setCustomLightShader(GLuint light_shader){
@@ -109,6 +118,15 @@ namespace easeopengl{
                 int width, height;
                 glfwGetFramebufferSize(window, &width, &height);  
                 return height;
+            }
+
+            void clearColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a){
+                    glClearColor(r,g,b,a);
+            }
+
+            void clear(){
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                glEnable(GL_DEPTH_TEST);
             }
 
             GLFWwindow* getWindow(){
