@@ -26,9 +26,9 @@ namespace easeopengl{
         Shader *light_fragment;
         GLuint object_shader;
         GLuint light_shader;
-        bool isOpen = true;
 
         public:
+            bool isOpen = true;
             EaseWindow(GLuint width, GLuint height, const char* name){
                 this->width = width;
                 this->height = height;
@@ -40,27 +40,10 @@ namespace easeopengl{
                     glfwTerminate();
                     exit(-1);
                 }
-
-                this->object_vertex = new Shader("./shaders/object/vertex_shader.glsl", GL_VERTEX_SHADER);
-                this->light_vertex = new Shader("./shaders/light/vertex_shader.glsl", GL_VERTEX_SHADER);
-                this->light_fragment = new Shader("./shaders/light/fragment_shader.glsl" , GL_FRAGMENT_SHADER);
-                this->light_fragment = new Shader("./shaders/object/fragment_shader.glsl" , GL_FRAGMENT_SHADER);
-
-                this->object_vertex->compile();
-                this->object_fragment->compile();
-                this->light_vertex->compile();
-                this->light_fragment->compile();
-
-                this->object_shader = Shader::linkShaders(*this->object_vertex , *this->object_fragment);
-                this->light_shader  =  Shader::linkShaders(*this->light_vertex , *this->light_fragment);
             }
 
             ~EaseWindow(){
                 this->isOpen = false;
-                delete this->object_vertex;
-                delete this->object_fragment;
-                delete this->light_fragment;
-                delete this->light_vertex;
             }
 
             void setCustomLightShader(GLuint light_shader){
@@ -97,6 +80,20 @@ namespace easeopengl{
                 glewExperimental = GL_TRUE;
                 glewInit();
                 glViewport(0, 0, this->width, this->height);
+
+
+                this->object_vertex = new Shader("./src/shaders/object/vertex_shader.glsl", GL_VERTEX_SHADER);
+                this->light_vertex = new Shader("./src/shaders/light/vertex_shader.glsl", GL_VERTEX_SHADER);
+                this->light_fragment = new Shader("./src/shaders/light/fragment_shader.glsl" , GL_FRAGMENT_SHADER);
+                this->object_fragment = new Shader("./src/shaders/object/fragment_shader.glsl" , GL_FRAGMENT_SHADER);
+
+                this->object_vertex->compile();
+                this->object_fragment->compile();
+                this->light_vertex->compile();
+                this->light_fragment->compile();
+
+                this->object_shader = Shader::linkShaders(*this->object_vertex , *this->object_fragment);
+                this->light_shader  =  Shader::linkShaders(*this->light_vertex , *this->light_fragment);
             }
 
             void update(){
@@ -104,7 +101,7 @@ namespace easeopengl{
                 glfwGetFramebufferSize(this->window, &width, &height);  
                 glViewport(0,0,width,height);
                 this->width = width;
-                this->height = height;        
+                this->height = height;      
             }
             
             int getWidth(){

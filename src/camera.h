@@ -85,7 +85,7 @@ namespace easeopengl{
         glm::vec3 position = glm::vec3(0.0f, this->height, 6.0f);
         glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        GLfloat speed = 1.0f;
+        GLfloat speed = 3.0f;
         GLfloat zoom_level = 45.0f;
         glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
 
@@ -103,7 +103,6 @@ namespace easeopengl{
         GLfloat current_frame;
 
         public:
-            Camera(){}
 
             Camera(EaseWindow window){
                 this->lastX = (GLfloat)window.getWidth()/2;
@@ -189,7 +188,7 @@ namespace easeopengl{
                 sdjaskdbask::up = this->up;
             }
 
-            void update(EaseWindow window, GLuint shader = NULL){
+            void update(EaseWindow window){
                 window.useObjectShader();
 
                 this->current_frame = glfwGetTime();
@@ -208,13 +207,13 @@ namespace easeopengl{
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
 
-                if(shader == NULL)
-                    shader = window.getObjectShader();
-
-
-                glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE , value_ptr(this->projection));  
-                glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE , value_ptr(this->view));
-                glUniform3f(glGetUniformLocation(shader, "camera_position"),this->position.x,this->position.y, this->position.z );
+                glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "projection"), 1, GL_FALSE , value_ptr(this->projection));  
+                glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "view"), 1, GL_FALSE , value_ptr(this->view));
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "camera_position"),this->position.x,this->position.y, this->position.z );
+                
+                window.useLightShader();
+                glUniformMatrix4fv(glGetUniformLocation(window.getLightShader(), "projection"), 1, GL_FALSE , value_ptr(this->projection));  
+                glUniformMatrix4fv(glGetUniformLocation(window.getLightShader(), "view"), 1, GL_FALSE , value_ptr(this->view));
             }
 
 

@@ -27,7 +27,7 @@ namespace easeopengl{
             float shininess = 32.0f;
 
         public:
-            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, GLint _indices[] = nullptr,  GLuint number_of_indices = 0, glm::vec3 _color = glm::vec3(1.0f,1.0f,1.0f)){
+            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, glm::vec3 _color = glm::vec3(1.0f,1.0f,1.0f), GLint _indices[] = nullptr,  GLuint number_of_indices = 0){
                 this->vertices = _vertices;
                 this->indices = _indices;
                 this->number_of_vertices = number_of_vertices;
@@ -59,15 +59,11 @@ namespace easeopengl{
             }
 
             void draw(GLint draw_using, EaseWindow window, bool isLight=false){
-                GLuint shader;
                 if(isLight){
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.ambient"), this->ambient.r,this->ambient.g,this->ambient.b);
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.diffuse"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.specular"), this->specular.r,this->specular.g,this->specular.b);
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), this->position.x,this->position.y,this->position.z);
-
+                    window.useLightShader();
                     glUniform3f(glGetUniformLocation(window.getLightShader(), "object_color"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
-                    
+                    glUniformMatrix4fv(glGetUniformLocation(window.getLightShader(), "model"), 1, GL_FALSE , value_ptr(this->model));
+
                     glBindVertexArray(this->vao->getVAO());
                     glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
                     glBindVertexArray(0);
@@ -98,6 +94,26 @@ namespace easeopengl{
 
             glm::vec3 getAmbient(){
                 return this->ambient;
+            }
+
+            glm::vec3 getDiffuse(){
+                return this->diffuse;
+            }
+
+            void setSpecular(glm::vec3 specular){
+                this->specular = specular;
+            }
+
+            void setAmbient(glm::vec3 ambient){
+                this->ambient = ambient;
+            }
+
+            void setDiffuse(glm::vec3 diffuse){
+                this->diffuse = diffuse;
+            }
+
+            glm::vec3 getSpecular(){
+                return this->specular;
             }
 
             glm::vec3 getPosition(){

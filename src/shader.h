@@ -2,7 +2,10 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include<iostream>
+#include<GL/glew.h>
 #include<fstream>
+
 namespace easeopengl{
 
     class Shader{
@@ -29,11 +32,12 @@ namespace easeopengl{
                 return content;
             }
         
-            Shader(const char* filename, GLuint shader_type){
+            Shader(const char* filename, int shader_type){
                 this->shader_filename = filename;
                 std::string shader_string = readShader(this->shader_filename);
 
                 const GLchar *shader_source = shader_string.c_str();
+
                 this->shader = glCreateShader(shader_type);
                 glShaderSource(this->shader , 1 , &shader_source , NULL);
             }
