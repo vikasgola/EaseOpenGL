@@ -1,5 +1,5 @@
 
-#include "../lib/easeopengl2d.hpp"
+#include "../../lib/2d/easeopengl2d.hpp"
 
 #include<iostream>
 
