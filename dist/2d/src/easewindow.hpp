@@ -17,7 +17,6 @@ namespace easeopengl2d{
         // GLuint light_shader;
 
         public:
-            bool isOpen = true;
             EaseWindow2D(GLuint width, GLuint height, const char* name){
                 this->width = width;
                 this->height = height;
@@ -91,6 +90,10 @@ namespace easeopengl2d{
 
             GLFWwindow* getWindow(){
                 return this->window;
+            }
+
+            bool isOpen(){
+                return !glfwWindowShouldClose(this->window);                
             }
     };
 }
