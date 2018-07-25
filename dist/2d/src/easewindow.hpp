@@ -14,7 +14,6 @@ namespace easeopengl2d{
         // Shader *object_vertex;
         // Shader *object_fragment;
         // GLuint object_shader;
-        // GLuint light_shader;
 
         public:
             EaseWindow2D(GLuint width, GLuint height, const char* name){
@@ -30,9 +29,7 @@ namespace easeopengl2d{
                 }
             }
 
-            ~EaseWindow2D(){
-                this->isOpen = false;
-            }
+            ~EaseWindow2D(){}
 
             // void setCustomObjectShader(GLuint object_shader){
             //     this->object_shader = object_shader;
@@ -92,8 +89,16 @@ namespace easeopengl2d{
                 return this->window;
             }
 
+            void checkEvents(){
+                glfwPollEvents();
+            }
+
+            void swapBuffers(){
+                glfwSwapBuffers(this->window);
+            }
+
             bool isOpen(){
-                return !glfwWindowShouldClose(this->window);                
+                return !glfwWindowShouldClose(this->window);
             }
     };
 }
