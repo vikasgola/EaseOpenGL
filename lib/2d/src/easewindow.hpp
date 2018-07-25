@@ -14,7 +14,6 @@ namespace easeopengl2d{
         // Shader *object_vertex;
         // Shader *object_fragment;
         // GLuint object_shader;
-        // GLuint light_shader;
 
         public:
             EaseWindow2D(GLuint width, GLuint height, const char* name){
@@ -88,6 +87,14 @@ namespace easeopengl2d{
 
             GLFWwindow* getWindow(){
                 return this->window;
+            }
+
+            void checkEvents(){
+                glfwPollEvents();
+            }
+
+            void swapBuffers(){
+                glfwSwapBuffers(this->window);
             }
 
             bool isOpen(){

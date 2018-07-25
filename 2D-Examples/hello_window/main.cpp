@@ -15,9 +15,9 @@ int main(int argc, char const *argv[]){
     window.use();
 
     while(window.isOpen()){
-        glfwPollEvents();
+        window.checkEvents();
 
-        glfwSwapBuffers(window.getWindow());
+        window.swapBuffers();
     }
 
     end();
