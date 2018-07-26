@@ -45,6 +45,10 @@ namespace easeopengl{
                 this->object_shader = object_shader;
             }
 
+            void captureMouse(){
+                glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            }
+
             void useLightShader(){
                 glUseProgram(this->light_shader);
             }

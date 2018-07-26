@@ -111,7 +111,6 @@ namespace easeopengl{
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
             
-                glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
 
             Camera( glm::vec3 position, glm::vec3 front ,  glm::vec3 target, glm::vec3 up, GLfloat speed , EaseWindow3D window){
@@ -126,7 +125,6 @@ namespace easeopengl{
                 this->view = glm::lookAt(this->position, this->target, this->up);
                 this->projection = glm::perspective( glm::radians(this->zoom_level) , (float)window.getWidth()/(float)window.getHeight() , 0.1f , 100.0f );
 
-                glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
 
             void setPosition(glm::vec3 position){
