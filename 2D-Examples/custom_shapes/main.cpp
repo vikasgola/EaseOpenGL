@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]){
     
     easeInit(3);
 
-    EaseWindow2D window(800,600,"Hello Window");
+    EaseWindow2D window(800,600,"Custom Shapes");
     window.use();
 
     EaseShape triangle(triangle_vert,6);
