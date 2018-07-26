@@ -8,13 +8,14 @@ namespace easeopengl{
 R"(
 #version 330 core
 
-layout (location = 0 ) in vec3 position;
+layout (location = 0 ) in vec2 position;
 layout ( location = 2 ) in vec2 texture_cord;
 
 out vec2 texture_coordinates;
+uniform mat4 model;
 
 void main(){
-    gl_Position = vec4(position , 1.0);
+    gl_Position = model*vec4(position,0.0f , 1.0);
     texture_coordinates = texture_cord;
 }
 )";
@@ -24,7 +25,6 @@ R"(
 #version 330 core
 
 in vec2 texture_coordinates;
-
 out vec4 color;
 
 uniform sampler2D texture_sampler;

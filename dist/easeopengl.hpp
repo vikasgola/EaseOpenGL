@@ -13,5 +13,7 @@
 #include "./src/camera.hpp"
 #include "./src/objects.hpp"
 #include "./src/light.hpp"
+#include "./src/shape.hpp"
+
 
 #endif
