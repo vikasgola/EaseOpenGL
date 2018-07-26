@@ -1,6 +1,6 @@
 
-#ifndef CONTROLS_H
-#define CONTROLS_H
+#ifndef CONTROLS_HPP
+#define CONTROLS_HPP
 
 #include<vector>
 

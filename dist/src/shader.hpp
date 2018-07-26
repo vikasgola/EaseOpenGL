@@ -32,11 +32,16 @@ namespace easeopengl{
                 return content;
             }
         
-            Shader(const char* filename, int shader_type){
-                this->shader_filename = filename;
-                std::string shader_string = readShader(this->shader_filename);
+            Shader(const char* filename_or_source, int shader_type, bool isFilename = true){
+                const GLchar *shader_source;
+                if(isFilename){
+                    this->shader_filename = filename_or_source;
+                    std::string shader_string = readShader(this->shader_filename);
 
-                const GLchar *shader_source = shader_string.c_str();
+                    shader_source = shader_string.c_str();
+                }else{
+                    shader_source = filename_or_source;
+                }
 
                 this->shader = glCreateShader(shader_type);
                 glShaderSource(this->shader , 1 , &shader_source , NULL);

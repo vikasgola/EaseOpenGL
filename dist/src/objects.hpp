@@ -1,6 +1,6 @@
 
-#ifndef OBJECTS_H
-#define OBJECTS_H
+#ifndef OBJECTS_HPP
+#define OBJECTS_HPP
 
 #include<GL/glew.h>
 
@@ -8,7 +8,8 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
-#include "vao.h"
+#include "easewindow.hpp"
+#include "vao.hpp"
 
 namespace easeopengl{
     class EaseObject{
@@ -58,7 +59,7 @@ namespace easeopengl{
 
             }
 
-            void draw(GLint draw_using, EaseWindow window, bool isLight=false){
+            void draw(GLint draw_using, EaseWindow3D window, bool isLight=false){
                 if(isLight){
                     window.useLightShader();
                     glUniform3f(glGetUniformLocation(window.getLightShader(), "object_color"), this->diffuse.r,this->diffuse.g,this->diffuse.b);

@@ -1,6 +1,6 @@
 
-#ifndef VBO_H
-#define VBO_H
+#ifndef VBO_HPP
+#define VBO_HPP
 
 namespace easeopengl{
 

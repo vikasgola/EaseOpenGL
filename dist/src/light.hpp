@@ -1,8 +1,9 @@
 
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef LIGHT_HPP
+#define LIGHT_HPP
 
-#include "objects.h"
+#include "easewindow.hpp"
+#include "objects.hpp"
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
@@ -64,7 +65,7 @@ namespace easeopengl{
                 this->light->setApperance(glm::vec3(0.2f),color,glm::vec3(1.0f));
             }
 
-            void setPosition(glm::vec3 position, EaseWindow window){
+            void setPosition(glm::vec3 position, EaseWindow3D window){
                 this->light->setPosition(position);
             }
 
@@ -72,7 +73,7 @@ namespace easeopengl{
                 this->light->setRotation(rotate_angle,rotation_axis);
             }
 
-            void setProperties(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, EaseWindow window){
+            void setProperties(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, EaseWindow3D window){
                 this->light->setApperance(ambient,diffuse,specular);
             }
 
@@ -80,11 +81,11 @@ namespace easeopengl{
                 this->light->clearModel();
             }
 
-            void show(EaseWindow window){
+            void show(EaseWindow3D window){
                 this->light->draw(GL_TRIANGLES, window , true);
             }
 
-            void on(EaseWindow window){
+            void on(EaseWindow3D window){
                 window.useObjectShader();
                 glm::vec3 a = this->light->getAmbient();
                 glm::vec3 d = this->light->getDiffuse();
@@ -97,7 +98,7 @@ namespace easeopengl{
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), pos.x, pos.y, pos.z);
             }
 
-            void off(EaseWindow window){
+            void off(EaseWindow3D window){
                 window.useObjectShader();
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.ambient"), 0.0f, 0.0f, 0.0f);
             }

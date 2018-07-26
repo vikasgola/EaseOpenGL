@@ -1,8 +1,8 @@
 
-#ifndef VAO_H
-#define VAO_H
-#include "vbo.h"
-#include "ebo.h"
+#ifndef VAO_HPP
+#define VAO_HPP
+#include "vbo.hpp"
+#include "ebo.hpp"
 
 namespace easeopengl{
 

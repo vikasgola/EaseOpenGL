@@ -1,17 +1,14 @@
 
-#include "../../dist/2d/easeopengl2d.hpp"
+#include "../../dist/easeopengl.hpp"
 
 #include<iostream>
-
 using namespace std;
-using namespace easeopengl2d;
+using namespace easeopengl;
 
 int main(int argc, char const *argv[]){
     
-    init(3);
-
-    EaseWindow2D window(800,600, "Hello Window");
-
+    easeInit(3);
+    EaseWindow3D window(800,600, "Hello Window");
     window.use();
 
     while(window.isOpen()){
@@ -20,6 +17,6 @@ int main(int argc, char const *argv[]){
         window.swapBuffers();
     }
 
-    end();
+    easeEnd();
     return 0;
 }

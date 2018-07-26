@@ -18,26 +18,29 @@ Open terminal in linux and follow commands
 ## Hello Window
 ```
 // include easeopengl
-#include "easeopengl.h"
+#include "easeopengl.hpp"
 
-// main function
+#include<iostream>
+using namespace std;
+using namespace easeopengl;
+
 int main(int argc, char const *argv[]){
-
-    // specify opengl version in init. Here we are using version 3
-    init(3);
-    // creating a window of width 800 and height 600 with title "EaseOpenGL"
-    EaseWindow window(800,600,"EaseOpenGL");
-    // use that window 
+    
+    easeInit(3);
+    EaseWindow3D window(800,600, "Hello Window");
     window.use();
 
-    while(!glfwWindowShouldClose(window)){
-        glfwPollEvents();        
-        glfwSwapBuffers(window);
+    while(window.isOpen()){
+        window.checkEvents();
+
+        window.swapBuffers();
     }
-    
-    endProgram();
+
+    easeEnd();
     return 0;
 }
+
+
 ```
 
 ## Docs

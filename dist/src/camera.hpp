@@ -1,12 +1,13 @@
 
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERA_HPP
+#define CAMERA_HPP
 
-#include "init.h"
-#include "controls.h"
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
+
+#include "controls.hpp"
+#include "easewindow.hpp"
 
 namespace easeopengl{
 
@@ -104,7 +105,7 @@ namespace easeopengl{
 
         public:
 
-            Camera(EaseWindow window){
+            Camera(EaseWindow3D window){
                 this->lastX = (GLfloat)window.getWidth()/2;
                 this->lastY = (GLfloat)window.getHeight()/2;
                 this->view = glm::lookAt(this->position, this->target, this->up);
@@ -113,7 +114,7 @@ namespace easeopengl{
                 glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             }
 
-            Camera( glm::vec3 position, glm::vec3 front ,  glm::vec3 target, glm::vec3 up, GLfloat speed , EaseWindow window){
+            Camera( glm::vec3 position, glm::vec3 front ,  glm::vec3 target, glm::vec3 up, GLfloat speed , EaseWindow3D window){
                 this->up = up;
                 this->speed = speed;
                 this->position = position;
@@ -188,7 +189,7 @@ namespace easeopengl{
                 sdjaskdbask::up = this->up;
             }
 
-            void update(EaseWindow window){
+            void update(EaseWindow3D window){
                 window.useObjectShader();
 
                 this->current_frame = glfwGetTime();
