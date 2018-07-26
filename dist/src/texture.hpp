@@ -24,11 +24,18 @@ namespace easeopengl{
                 glTexImage2D(GL_TEXTURE_2D, 0 ,GL_RGB , this->texture_width, this->texture_height, 0, GL_RGB,
                     GL_UNSIGNED_BYTE, this->image);
                 glGenerateMipmap(GL_TEXTURE_2D);
+                SOIL_free_image_data(this->image);
+                glBindTexture(GL_TEXTURE_2D,0);
+            }
+
+            void use(EaseWindow3D window){
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texture);
+                glUniform1i(glGetUniformLocation(window.getObjectShader(), "texture_sampler"),0);
+
             }
 
             ~Texture(){
-                SOIL_free_image_data(this->image);
-                glBindTexture(GL_TEXTURE_2D,0);
             }
 
             GLuint getTexture(){

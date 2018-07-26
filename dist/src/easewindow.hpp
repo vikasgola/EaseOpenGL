@@ -10,6 +10,7 @@
 #include"controls.hpp"
 #include"shader.hpp"
 #include "./shaders/3d/light.hpp"
+#include "./shaders/2d/shape.hpp"
 #include "./shaders/3d/object.hpp"
 
 namespace easeopengl{
@@ -147,8 +148,21 @@ namespace easeopengl{
     };
 
     class EaseWindow2D:public EaseWindow{
+        Shader *object_vertex;
+        Shader *object_fragment;
         public:
             EaseWindow2D(GLuint width, GLuint height, const char* name):EaseWindow(width,height,name){
+            }
+
+            void use(){
+                EaseWindow::use();
+                this->object_vertex = new Shader(shaders2d::vertex_shape_shader, GL_VERTEX_SHADER,false);
+                this->object_fragment = new Shader(shaders2d::fragment_shape_shader , GL_FRAGMENT_SHADER, false);
+
+                this->object_vertex->compile();
+                this->object_fragment->compile();
+
+                this->setCustomObjectShader(Shader::linkShaders(*this->object_vertex , *this->object_fragment));
             }
     };
 
