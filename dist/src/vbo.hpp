@@ -25,6 +25,7 @@ namespace easeopengl{
 
                 glGenBuffers(1, &this->vbo);
                 glBindBuffer(GL_ARRAY_BUFFER,this->vbo);
+
                 glBufferData(GL_ARRAY_BUFFER, this->vbo_data_length*sizeof(this->vbo_data), this->vbo_data, GL_STATIC_DRAW);
             }
 

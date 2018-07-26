@@ -8,7 +8,7 @@ using namespace easeopengl;
 GLfloat triangle_vert[] = {
     0.5f, 0.0f,
     0.0f , 0.5f,
-    0.0f, -0.5f
+    -0.5f, 0.0f,
 };
 
 int main(int argc, char const *argv[]){
@@ -19,7 +19,8 @@ int main(int argc, char const *argv[]){
     window.use();
 
     EaseShape triangle(triangle_vert,6);
-    triangle.setScale(0.2f,0.2f);
+
+    // triangle.setScale(0.2f,0.2f);
 
     while(window.isOpen()){
         window.checkEvents();
@@ -29,7 +30,7 @@ int main(int argc, char const *argv[]){
         // triangle.clearModel();
         triangle.setRotation(00.004f);
         triangle.setColor(sin(glfwGetTime()) ,sin(glfwGetTime() + 10) ,sin(glfwGetTime())+ 20);
-        triangle.draw(GL_TRIANGLES,window);
+        triangle.draw(GL_TRIANGLE_FAN,window);
 
         window.swapBuffers();
     }

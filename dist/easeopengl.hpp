@@ -13,7 +13,9 @@
 #include "./src/camera.hpp"
 #include "./src/objects.hpp"
 #include "./src/light.hpp"
-#include "./src/shape.hpp"
+
+#include "./src/shapes/shape.hpp"
+#include "./src/shapes/polygon.hpp"
 
 
 #endif
