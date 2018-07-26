@@ -27,7 +27,7 @@ using namespace easeopengl;
 int main(int argc, char const *argv[]){
     
     easeInit(3);
-    EaseWindow3D window(800,600, "Hello Window");
+    EaseWindow3D/EaseWindow2D window(800,600, "Hello Window");
     window.use();
 
     while(window.isOpen()){
@@ -39,8 +39,6 @@ int main(int argc, char const *argv[]){
     easeEnd();
     return 0;
 }
-
-
 ```
 
 ## Docs
