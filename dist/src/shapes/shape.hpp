@@ -79,7 +79,6 @@ namespace easeopengl{
                     glDrawElements(draw_using ,this->number_of_indices ,GL_UNSIGNED_INT,0);
                     glBindVertexArray(0);
                 }
-
             }
 
             void setColor(GLfloat r,GLfloat g, GLfloat b){
