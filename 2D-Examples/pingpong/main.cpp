@@ -38,13 +38,12 @@ int main(int argc, char const *argv[]){
     
     easeInit(3);
 
-    EaseWindow2D window(800,600,"Polygons");
+    EaseWindow2D window(800,600,"Ping Pong");
     window.use();
 
     Circle circle(0.02f);
     Rectangle bat1(0.03f,1.0f);
     Rectangle bat2(0.03f,1.0f);
-
 
     addKeyCallBack(keyboard);
 

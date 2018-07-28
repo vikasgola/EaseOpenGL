@@ -39,8 +39,8 @@ namespace easeopengl{
                 this->createShape(vert,ind);
             }
 
-            void draw(EaseWindow2D window){
-                EaseShape::draw(GL_TRIANGLES,window);
+            void draw(EaseWindow2D window, GLuint draw_using=GL_TRIANGLES){
+                EaseShape::draw(draw_using,window);
             }
 
     };
@@ -76,10 +76,27 @@ namespace easeopengl{
                 this->createShape(points);
             }
 
-            void draw(EaseWindow2D window){
-                EaseShape::draw(GL_TRIANGLES,window);
+            void draw(EaseWindow2D window, GLuint draw_using=GL_TRIANGLES){
+                EaseShape::draw(draw_using,window);
+            }
+    };
+
+    class Point:public EaseShape{
+        GLfloat x,y,size;
+
+        public:
+            Point(GLfloat x, GLfloat y, GLfloat size = 1.0f){
+                this->x = x;
+                this->y = y;
+                this->size = size;
+                GLfloat vert[2] = {x,y};
+                this->number_of_vertices = 2;
+                this->createShape(vert);
             }
 
+            void draw(EaseWindow2D window){
+                EaseShape::draw(GL_POINTS,window);
+            }
     };
 }
 

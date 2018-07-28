@@ -28,14 +28,17 @@ namespace easeopengl{
                 glBindTexture(GL_TEXTURE_2D,0);
             }
 
-            void use(EaseWindow3D window){
+            void use(EaseWindow2D window){
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 glUniform1i(glGetUniformLocation(window.getObjectShader(), "texture_sampler"),0);
-
             }
 
             ~Texture(){
+            }
+
+            void unbind(){
+                glBindTexture(GL_TEXTURE_2D,0);
             }
 
             GLuint getTexture(){

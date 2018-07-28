@@ -21,12 +21,15 @@ int main(int argc, char const *argv[]){
     Polygon triangle(0.2f,3);
     Polygon pentagon(0.2f,5,0.5f,-0.5f);
 
+    Point a(0.0f,-1.0f);
+
     while(window.isOpen()){
         window.checkEvents();
 
         window.clear();
 
         circle.draw(window);
+
         rect.draw(window);
         square.draw(window);
         triangle.draw(window);

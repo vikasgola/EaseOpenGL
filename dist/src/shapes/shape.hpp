@@ -9,6 +9,7 @@
 
 #include "../easewindow.hpp"
 #include "../vao.hpp"
+#include "../texture.hpp"
 
 namespace easeopengl{
     class EaseShape{
@@ -19,7 +20,9 @@ namespace easeopengl{
             glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f);
             GLfloat angle = 0.0f;
             glm::vec3 color = glm::vec3(1.0f);
-        
+            Texture *texture = nullptr;
+            bool isFill = true;
+
         protected:
             GLuint *indices = nullptr;
             GLuint number_of_vertices , number_of_indices = 0;
@@ -65,8 +68,32 @@ namespace easeopengl{
 
             }
 
+            void noFill(){
+                this->isFill = false;
+            }
+
+            void fill(){
+                this->isFill = true;
+            }
+
+            void addTexture(const char* filename){
+                this->texture = new Texture(filename);
+                this->texture->generate();
+            }
+
+            void removeTexture(){
+                this->texture = nullptr;
+            }
+
             void draw(GLint draw_using, EaseWindow2D window){
                 window.useObjectShader();
+
+                if(isFill){
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                }else{
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                }
+
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "object_color"), this->color.r,this->color.g,this->color.b);
                 glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "model"), 1, GL_FALSE , value_ptr(this->model));
                 
