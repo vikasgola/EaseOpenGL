@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]){
         window.clear();
 
         // triangle.clearModel();
-        triangle.setRotation(00.004f);
+        triangle.rotate(00.004f);
         triangle.setColor(sin(glfwGetTime()) ,sin(glfwGetTime() + 10) ,sin(glfwGetTime())+ 20);
         triangle.draw(GL_TRIANGLE_FAN,window);
 

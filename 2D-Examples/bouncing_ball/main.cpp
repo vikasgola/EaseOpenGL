@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]){
         window.clear();
 
         circle.clearModel();
-        circle.setPosition(pos.x,pos.y);
+        circle.translate(pos.x,pos.y);
         circle.draw(window);
 
         if(pos.x < -1.0f + 0.05f){

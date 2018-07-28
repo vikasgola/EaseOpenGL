@@ -101,7 +101,7 @@ void draw(EaseWindow3D window){
         light.show(window);
 
         cube.clearModel();
-        cube.setPosition(vec3(0.0f,0.5f,0.0f));
+        cube.translate(vec3(0.0f,0.5f,0.0f));
         cube.draw(GL_TRIANGLES,window);
 
         plane.draw(GL_TRIANGLES,window);

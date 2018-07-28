@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]){
     Polygon triangle(0.2f,3);
     Polygon pentagon(0.2f,5,0.5f,-0.5f);
 
-    Point a(0.0f,-1.0f);
+    Line line(-1.0f,-1.0f,1.0f,1.0f);
 
     while(window.isOpen()){
         window.checkEvents();
@@ -34,6 +34,8 @@ int main(int argc, char const *argv[]){
         square.draw(window);
         triangle.draw(window);
         pentagon.draw(window);
+
+        line.draw(window);
 
         window.swapBuffers();
     }

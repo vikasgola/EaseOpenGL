@@ -116,12 +116,12 @@ namespace easeopengl{
                 return this->position;
             }
 
-            void setPosition(GLfloat x,GLfloat y){
+            void translate(GLfloat x,GLfloat y){
                 this->position = glm::vec3(x,y,0.0f);
                 this->model = glm::translate(this->model, this->position);
             }
 
-            void setRotation(GLfloat rotate_angle, glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f)){
+            void rotate(GLfloat rotate_angle, glm::vec3 rotation_axis = glm::vec3(0.0f,0.0f,1.0f)){
                 this->angle = rotate_angle;
                 this->rotation_axis = rotation_axis;
                 this->model = glm::rotate(this->model , this->angle , this->rotation_axis);

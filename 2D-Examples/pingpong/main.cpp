@@ -55,7 +55,7 @@ int main(int argc, char const *argv[]){
         window.clear();
 
         circle.clearModel();
-        circle.setPosition(pos.x,pos.y);
+        circle.translate(pos.x,pos.y);
         circle.draw(window);
 
 
@@ -63,9 +63,9 @@ int main(int argc, char const *argv[]){
         
         bat1.clearModel();
         bat2.clearModel();
-        bat1.setPosition(-1.0f + 0.03f, y);
+        bat1.translate(-1.0f + 0.03f, y);
         bat1.draw(window);
-        bat2.setPosition(1.0f - 0.03f, y2);
+        bat2.translate(1.0f - 0.03f, y2);
         bat2.draw(window);
         
 

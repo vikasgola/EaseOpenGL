@@ -60,17 +60,17 @@ namespace easeopengl{
             Light(glm::vec3 color, glm::vec3 position){
                 this->light = new EaseObject(3, 0,this->vertices,108);
                 this->light->clearModel();
-                this->light->setPosition(position);
-                this->light->setScale(0.1f,0.1f,0.1f);
+                this->light->translate(position);
+                this->light->scale(0.1f,0.1f,0.1f);
                 this->light->setApperance(glm::vec3(0.2f),color,glm::vec3(1.0f));
             }
 
             void setPosition(glm::vec3 position, EaseWindow3D window){
-                this->light->setPosition(position);
+                this->light->translate(position);
             }
 
             void setRotation(GLfloat rotate_angle , glm::vec3 rotation_axis){
-                this->light->setRotation(rotate_angle,rotation_axis);
+                this->light->rotate(rotate_angle,rotation_axis);
             }
 
             void setProperties(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, EaseWindow3D window){
