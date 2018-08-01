@@ -26,9 +26,11 @@ namespace easeopengl{
             glm::vec3 diffuse;
             glm::vec3 specular;
             float shininess = 32.0f;
+            Texture *diffuseMap = nullptr;
+            Texture *specularMap = nullptr;
 
         public:
-            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, glm::vec3 _color = glm::vec3(1.0f,1.0f,1.0f), GLint _indices[] = nullptr,  GLuint number_of_indices = 0){
+            EaseObject(GLuint point_length, GLint id , GLfloat _vertices[], GLuint number_of_vertices, glm::vec3 _color = glm::vec3(0.0f,0.0f,0.0f), GLint _indices[] = nullptr,  GLuint number_of_indices = 0){
                 this->vertices = _vertices;
                 this->indices = _indices;
                 this->number_of_vertices = number_of_vertices;
@@ -41,15 +43,22 @@ namespace easeopengl{
                 
                 this->vao->bindVBO(this->vertices ,  this->number_of_vertices);
                 this->vao->setVBOVertexAttrib(0,3,0);
-                if(id == 02 || id == 023 || id == 012 || id == 0123){
-                    this->vao->setVBOVertexAttrib(2,2,3);
-                }
-                if(id == 01 || id == 012 || id == 0123 || id == 013){
+                
+                if(id == 01){
                     this->vao->setVBOVertexAttrib(1,3,3);
                 }
-                if(id == 013 || id == 0123 || id == 023 || id == 03){
-                    this->vao->setVBOVertexAttrib(3,3,3);
+                if(id == 02){
+                    this->vao->setVBOVertexAttrib(2,2,3);
                 }
+                if(id == 012){
+                    this->vao->setVBOVertexAttrib(1,3,3);
+                    this->vao->setVBOVertexAttrib(2,2,6);
+                }
+                if(id == 021){
+                    this->vao->setVBOVertexAttrib(2,2,3);
+                    this->vao->setVBOVertexAttrib(1,3,6);
+                }
+
 
                 if(this->indices != nullptr){
                     this->vao->bindEBO(this->indices, number_of_indices);
@@ -71,11 +80,29 @@ namespace easeopengl{
                 }else if(this->indices == nullptr){
                     window.useObjectShader();
                     glUniformMatrix4fv(glGetUniformLocation(window.getObjectShader(), "model"), 1, GL_FALSE , value_ptr(this->model));
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "material.ambient"), this->ambient.r,this->ambient.g,this->ambient.b);
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "material.diffuse"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
-                    glUniform3f(glGetUniformLocation(window.getObjectShader(), "material.specular"), this->specular.r,this->specular.g,this->specular.b);
-                    glUniform1f(glGetUniformLocation(window.getObjectShader(), "material.shininess"), this->shininess);
                     
+                    if(this->diffuseMap == nullptr){
+                        glUniform1i(glGetUniformLocation(window.getObjectShader(), "tmaterial.isUsing"), 0);
+                        glUniform1i(glGetUniformLocation(window.getObjectShader(), "cmaterial.isUsing"), 1);
+                        glUniform3f(glGetUniformLocation(window.getObjectShader(), "cmaterial.ambient"), this->ambient.r,this->ambient.g,this->ambient.b);
+                        glUniform3f(glGetUniformLocation(window.getObjectShader(), "cmaterial.diffuse"), this->diffuse.r,this->diffuse.g,this->diffuse.b);
+                        glUniform3f(glGetUniformLocation(window.getObjectShader(), "cmaterial.specular"), this->specular.r,this->specular.g,this->specular.b);
+                        glUniform1f(glGetUniformLocation(window.getObjectShader(), "cmaterial.shininess"), this->shininess);
+                    }else{
+                        glUniform1i(glGetUniformLocation(window.getObjectShader(), "cmaterial.isUsing"), 0);
+                        glUniform1i(glGetUniformLocation(window.getObjectShader(), "tmaterial.isUsing"), 1);
+                        this->diffuseMap->use(window, "diffusemap");
+                        
+                        if(this->specularMap != nullptr){
+                            glUniform1i(glGetUniformLocation(window.getObjectShader(), "tmaterial.haveSpecular"), 1);
+                            this->specularMap->use(window,"specularmap");
+                        }else{
+                            glUniform1i(glGetUniformLocation(window.getObjectShader(), "tmaterial.haveSpecular"), 0);
+                            glUniform3f(glGetUniformLocation(window.getObjectShader(), "tmaterial.specularD"), this->specular.r,this->specular.g,this->specular.b);
+                        }
+                        
+                        glUniform1f(glGetUniformLocation(window.getObjectShader(), "tmaterial.shininess"), this->shininess);
+                    }
                     glBindVertexArray(this->vao->getVAO());
                     glDrawArrays(draw_using , 0 , this->number_of_vertices/this->vao->getVAOdataLength());
                     glBindVertexArray(0);
@@ -93,12 +120,18 @@ namespace easeopengl{
                 this->shininess = shininess;
             }
 
-            glm::vec3 getAmbient(){
-                return this->ambient;
+            void addTexture(const char* diffuse, const char* specular = nullptr){
+                this->diffuseMap = new Texture(diffuse);
+                this->diffuseMap->generate();
+                if(specular != nullptr){
+                    this->specularMap = new Texture(specular);
+                    this->specularMap->generate();
+                }
             }
 
-            glm::vec3 getDiffuse(){
-                return this->diffuse;
+            void removeTexture(){
+                this->diffuseMap = nullptr;
+                this->specularMap = nullptr;
             }
 
             void setSpecular(glm::vec3 specular){
@@ -111,10 +144,6 @@ namespace easeopengl{
 
             void setDiffuse(glm::vec3 diffuse){
                 this->diffuse = diffuse;
-            }
-
-            glm::vec3 getSpecular(){
-                return this->specular;
             }
 
             glm::vec3 getPosition(){

@@ -58,7 +58,7 @@ namespace easeopengl{
         
         public:
             Light(glm::vec3 color, glm::vec3 position){
-                this->light = new EaseObject(3, 0,this->vertices,108);
+                this->light = new EaseObject(3,0,this->vertices,108);
                 this->light->clearModel();
                 this->light->translate(position);
                 this->light->scale(0.1f,0.1f,0.1f);

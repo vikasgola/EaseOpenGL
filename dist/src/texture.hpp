@@ -28,6 +28,18 @@ namespace easeopengl{
                 glBindTexture(GL_TEXTURE_2D,0);
             }
 
+            void use(EaseWindow3D window, const char* type){
+                if(type == "specularmap"){
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, texture);
+                    glUniform1i(glGetUniformLocation(window.getObjectShader(), "tmaterial.specular"),1);
+                }else if(type == "diffusemap"){
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, texture);
+                    glUniform1i(glGetUniformLocation(window.getObjectShader(), "tmaterial.diffuse"),0);
+                }else
+                    std::cout<<"Unknown texture type: "<<type<<std::endl;
+            }
             void use(EaseWindow2D window){
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
