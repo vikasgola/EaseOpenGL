@@ -146,6 +146,18 @@ namespace easeopengl{
                 this->diffuse = diffuse;
             }
 
+            glm::vec3 getSpecular(){
+                return this->specular;
+            }
+
+            glm::vec3 getAmbient(){
+                return this->ambient;
+            }
+
+            glm::vec3 getDiffuse(){
+                return this->diffuse;
+            }
+
             glm::vec3 getPosition(){
                 return this->position;
             }

@@ -12,10 +12,16 @@
 #include "./src/controls.hpp"
 #include "./src/camera.hpp"
 #include "./src/objects.hpp"
-#include "./src/light.hpp"
+
+#include "./src/lights/light.hpp"
+#include "./src/lights/directional.hpp"
 
 #include "./src/shapes/shape.hpp"
+#include "./src/shapes/circle.hpp"
 #include "./src/shapes/polygon.hpp"
+#include "./src/shapes/line.hpp"
+#include "./src/shapes/point.hpp"
+#include "./src/shapes/rectangle.hpp"
 
 
 #endif

@@ -2,8 +2,8 @@
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
-#include "easewindow.hpp"
-#include "objects.hpp"
+#include "../easewindow.hpp"
+#include "../objects.hpp"
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
@@ -11,7 +11,6 @@
 namespace easeopengl{
     class Light{
         EaseObject *light;
-        glm::vec3 color;
         GLfloat vertices[108] = {
             -0.5f, -0.5f, -0.5f, 
             0.5f, -0.5f, -0.5f, 
@@ -63,10 +62,14 @@ namespace easeopengl{
                 this->light->translate(position);
                 this->light->scale(0.1f,0.1f,0.1f);
                 this->light->setApperance(glm::vec3(0.2f),color,glm::vec3(1.0f));
+            
             }
 
             void setPosition(glm::vec3 position, EaseWindow3D window){
                 this->light->translate(position);
+                window.useObjectShader();
+                glm::vec3 pos = this->light->getPosition();
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), pos.x, pos.y, pos.z);
             }
 
             void setRotation(GLfloat rotate_angle , glm::vec3 rotation_axis){
@@ -87,6 +90,7 @@ namespace easeopengl{
 
             void on(EaseWindow3D window){
                 window.useObjectShader();
+                glUniform1i(glGetUniformLocation(window.getObjectShader(), "light.isDirectional"), 0);
                 glm::vec3 a = this->light->getAmbient();
                 glm::vec3 d = this->light->getDiffuse();
                 glm::vec3 s = this->light->getSpecular();
@@ -101,6 +105,8 @@ namespace easeopengl{
             void off(EaseWindow3D window){
                 window.useObjectShader();
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.ambient"), 0.0f, 0.0f, 0.0f);
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.diffuse"), 0.0f, 0.0f, 0.0f);
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.specular"), 0.0f, 0.0f, 0.0f);
             }
     };
 }

@@ -78,7 +78,12 @@ void draw(EaseWindow3D window){
     camera.canMoveLegs(true);
     camera.canMoveHead(true);
 
-    Light light(vec3(1.0f,1.0f,1.0f),vec3(1.0f,3.0f,-2.0f));
+    // Light light(vec3(1.0f,1.0f,1.0f),vec3(1.0f,3.0f,-2.0f));
+    // light.on(window);
+
+    DirectionalLight light(vec3(1.0f,1.0f,1.0f),vec3(-0.2f, -1.0f, -0.3f));
+    light.on(window);
+
 
 
     while(window.isOpen()){
@@ -97,11 +102,10 @@ void draw(EaseWindow3D window){
         camera.update(window);
         camera.moveLegs();
 
-        light.clearModel();
+        // light.clearModel();
         // light.setProperties(vec3(0.2f),vec3(sin(glfwGetTime()*0.1f),sin(glfwGetTime()*0.3f),sin(glfwGetTime()*0.78)),vec3(1.0f),window);
-        light.setPosition(vec3(radi_x, 4.0f , radi_z),window);
-        light.on(window);
-        light.show(window);
+        // light.setPosition(vec3(radi_x, 4.0f , radi_z),window);
+        // light.show(window);
 
         cube.clearModel();
         cube.translate(vec3(0.0f,0.5f,0.0f));

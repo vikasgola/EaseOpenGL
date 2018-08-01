@@ -64,6 +64,7 @@ struct Light {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    bool isDirectional;
 };
 
 uniform ColorMaterial cmaterial;
@@ -76,7 +77,13 @@ void main(){
     vec3 ambient,diffuse,specular;
 
     vec3 norm = normalize(normal);
-    vec3 light_dir = normalize(light.position-fragment_position);
+    vec3 light_dir;
+
+    if(!light.isDirectional)
+        light_dir = normalize(light.position-fragment_position);
+    else
+        light_dir = normalize(-light.position);
+
     float diff = max(dot(norm,light_dir),0.0);
 
     vec3 view_dir = normalize(camera_position - fragment_position);
