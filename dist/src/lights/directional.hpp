@@ -22,9 +22,7 @@ namespace easeopengl{
 
             void setDirection(glm::vec3 direction, EaseWindow3D window){
                 this->direction = direction;
-                glm::vec3 pos = this->direction;
-                glUniform1i(glGetUniformLocation(window.getObjectShader(), "light.isDirectional"), 1);
-                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), pos.x, pos.y, pos.z);            }
+            }
 
             void setProperties(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, EaseWindow3D window){
                 this->ambient = ambient;
@@ -43,12 +41,14 @@ namespace easeopengl{
 
                 glm::vec3 pos = this->direction;
                 glUniform1i(glGetUniformLocation(window.getObjectShader(), "light.isDirectional"), 1);
-                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), pos.x, pos.y, pos.z);
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.direction"), pos.x, pos.y, pos.z);
             }
 
             void off(EaseWindow3D window){
                 window.useObjectShader();
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.ambient"), 0.0f, 0.0f, 0.0f);
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.diffuse"), 0.0f, 0.0f, 0.0f);
+                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.specular"), 0.0f, 0.0f, 0.0f);
             }
     };
 }

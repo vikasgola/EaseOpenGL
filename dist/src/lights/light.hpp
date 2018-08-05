@@ -54,22 +54,22 @@ namespace easeopengl{
             -0.5f,  0.5f,  0.5f, 
             -0.5f,  0.5f, -0.5f
         };
+
+        protected:
+            GLfloat constant = 1.0f,linear = 0.0f,quadratic = 0.0f;
         
         public:
             Light(glm::vec3 color, glm::vec3 position){
                 this->light = new EaseObject(3,0,this->vertices,108);
                 this->light->clearModel();
                 this->light->translate(position);
-                this->light->scale(0.1f,0.1f,0.1f);
+                // this->light->scale(0.1f,0.1f,0.1f);
                 this->light->setApperance(glm::vec3(0.2f),color,glm::vec3(1.0f));
             
             }
 
             void setPosition(glm::vec3 position, EaseWindow3D window){
                 this->light->translate(position);
-                window.useObjectShader();
-                glm::vec3 pos = this->light->getPosition();
-                glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), pos.x, pos.y, pos.z);
             }
 
             void setRotation(GLfloat rotate_angle , glm::vec3 rotation_axis){
@@ -97,6 +97,11 @@ namespace easeopengl{
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.ambient"), a.x,a.y,a.z );
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.diffuse"), d.r,d.g,d.b);
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.specular"), s.r,s.g,s.b);
+
+                glUniform1f(glGetUniformLocation(window.getObjectShader(), "light.constant"),this->constant);
+                glUniform1f(glGetUniformLocation(window.getObjectShader(), "light.linear"),this->linear);
+                glUniform1f(glGetUniformLocation(window.getObjectShader(), "light.quadratic"), this->quadratic);
+
 
                 glm::vec3 pos = this->light->getPosition();
                 glUniform3f(glGetUniformLocation(window.getObjectShader(), "light.position"), pos.x, pos.y, pos.z);

@@ -61,10 +61,20 @@ struct TexturedMaterial{
 
 struct Light {
     vec3 position;
+    vec3 direction;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
     bool isDirectional;
+
+    float constant;
+    float linear;
+    float quadratic;
+    
+    float cutOff;
+    float outerCutOff;
 };
 
 uniform ColorMaterial cmaterial;
@@ -79,10 +89,12 @@ void main(){
     vec3 norm = normalize(normal);
     vec3 light_dir;
 
-    if(!light.isDirectional)
+    // directional light
+    if(!light.isDirectional){
         light_dir = normalize(light.position-fragment_position);
-    else
-        light_dir = normalize(-light.position);
+    }else{
+        light_dir = normalize(-light.direction);
+    }
 
     float diff = max(dot(norm,light_dir),0.0);
 
@@ -111,7 +123,27 @@ void main(){
             specular = light.specular * spec * vec3(texture(tmaterial.specular,texture_coordinates));
         }
     }
+
+
+    // point light
+    float distance = length(light.position - fragment_position);
+    float attenuation = 1.0f / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
     
+    ambient *= attenuation;
+    diffuse *= attenuation;
+    specular *= attenuation;
+
+
+    // spot light
+    float theta = dot(light_dir, normalize(-light.direction));
+    float epsilon = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    
+    if(epsilon > 0.0f){
+        diffuse *= intensity;
+        specular *= intensity;
+    }
+
     color = vec4(ambient + diffuse + specular , 1.0f);
 }
 

@@ -15,6 +15,8 @@
 
 #include "./src/lights/light.hpp"
 #include "./src/lights/directional.hpp"
+#include "./src/lights/point.hpp"
+#include "./src/lights/spot.hpp"
 
 #include "./src/shapes/shape.hpp"
 #include "./src/shapes/circle.hpp"
